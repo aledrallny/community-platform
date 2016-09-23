@@ -1,29 +1,29 @@
-#How to do make database changes
+#Como introducir cambios en la base de datos
 
-To handle data migrations we use a Postgrator migration tool. You can find out more infos about it at: https://github.com/rickbergfalk/postgrator
+Para manejar migraciones de datos usamos una herramienta de migración Postgrator. Puede encontrar más información sobre el asunto en: https://github.com/rickbergfalk/postgrator
 
 Each cp-*-service which uses postgresql has a directory `migrations` in `scripts/database/pg` directory, which will always contain a `001.do.init-db.sql` file
 where lies the initial version of the schema. 
 
 The 001.do.init-db.sql will run at system setup and will create your database initial schema.
 
-If you need to do make any database schema changes, you do so by creating a migration sql file as follows:
+Si necesita hacer cambios en el esquema de la base de datos puede hacer un archivo sql de migración del siguiente modo:
 
-* Create another *.sql file under the `migrations` directory. 
+* Cree otro archivo *.sql  bajo el directorio  `migrations` . 
 
-* The file name need to follow this convention: [version].[action].[optional-description].sql See the details bellow: 
+* El nobre del archivo debe seguir la siguente convención: [version].[action].[optional-description].sql See the details bellow: 
 
-	* Version must be a number, but you may start and increment the numbers in any way you'd like.
+	* La Version debe ser un número, pero puede incrementar los números del modo que usted lo desee.
 
 	* Action must be "do" (we won't support rollbacks, so "undo" is not an option for action)
 
 	* Optional-description can be a label or tag to help keep track of what happens inside the script. Descriptions should not contain periods.
 
-Here is an example:
+Aquí hay un ejemplo:
 
-* create `002.do.add-test-column.sql` file in `scripts/database/pg/migrations` directory;
+* crear un archivo  `002.do.add-test-column.sql` en el directorio `scripts/database/pg/migrations`;
 
-* the script contains the following:
+* el script contiene lo siguiente:
 
 ```sql
 DO $$ 
@@ -42,7 +42,7 @@ DO $$
 $$
 ```
 
-* this script adds two new columns, only if they don't already exists, otherwise it will just display an error saying the columns are already in there.
+* Este script agrega dos nuevas columnas, solo si no existen ya, de otro modo desplegará un mensaje de error diciendo que las columnas ya están allí.
 
 * to apply this changes to the DB schema you have to run the migration script in that service, like this:
 
